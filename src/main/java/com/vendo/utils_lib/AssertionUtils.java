@@ -1,4 +1,4 @@
-package com.vendo.test_utils_lib;
+package com.vendo.utils_lib;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -10,12 +10,18 @@ public class AssertionUtils {
 
     private static final Logger LOGGER = Logger.getLogger(AssertionUtils.class.getName() );
 
-    public static void assertFromDto(Object entity, Object dto) {
-        Map<String, Object> entityData = mapObject(entity);
-        Map<String, Object> dtoData = mapObject(dto);
+    public static void assertFrom(Object entity, Object target) {
+        assertFrom(entity, target, new String[0]);
+    }
 
-        for (Map.Entry<String, Object> entry : dtoData.entrySet()) {
+    public static void assertFrom(Object entity, Object target, String... skipFields) {
+        Map<String, Object> entityData = mapObject(entity);
+        Map<String, Object> targetData = mapObject(target);
+
+        for (Map.Entry<String, Object> entry : targetData.entrySet()) {
             Object actual = entityData.get(entry.getKey());
+
+            if (skipFields.length > 0 && StringUtils.contains(entry.getKey(), skipFields)) continue;
 
             if (!entityData.containsKey(entry.getKey())) {
                 throw new IllegalArgumentException(
