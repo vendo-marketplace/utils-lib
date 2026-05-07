@@ -10,4 +10,8 @@ public class StringUtils {
         return false;
     }
 
+    public static boolean isEmpty(String target) {
+        return target != null && !target.isEmpty();
+    }
+
 }
